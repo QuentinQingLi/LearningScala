@@ -171,6 +171,15 @@ object Anagrams {
    *  Note: There is only one anagram of an empty sentence.
    */
   def sentenceAnagrams(sentence: Sentence): List[Sentence] = {
+    /*
+    For each iteration, we traverse over all the valid occurrences, remove the occurrence from the target as the new
+    target, then generate the new set of valid occurrences, traverse it over again, until hit the two base cases:
+    a. The target occurrence is empty, means we find a good combination and,
+    b. The target occurrence is not empty, but we don't have any valid occurrence
+    For the case a., we build up the list.
+    For the case b., we build nothing. This case can be implemented by the empty set of valid occurrence in the
+      for loop.
+    */
     def getValidOccurrence(occu:List[Occurrences]): List[Occurrences] =
       occu.filter(p=> dictionaryByOccurrences.getOrElse(p,List()).nonEmpty)
 
@@ -183,7 +192,6 @@ object Anagrams {
           occu<- getValidOccurrence( combinations(targetOccu) )
           word<- dictionaryByOccurrences(occu)
           sentence<- fillSentence(subtract(targetOccu,occu))
-          if occu.nonEmpty
         } yield word :: sentence
       }
     }
